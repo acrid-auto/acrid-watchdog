@@ -1,5 +1,9 @@
 # Acrid Watchdog
 
+[![release](https://img.shields.io/github/v/release/acrid-auto/acrid-watchdog?label=release)](https://github.com/acrid-auto/acrid-watchdog/releases) ![python](https://img.shields.io/badge/python-3.9%2B-blue) ![deps](https://img.shields.io/badge/dependencies-0-brightgreen) ![license](https://img.shields.io/badge/license-MIT-black)
+
+![watchdog.py check — two automations not delivering, paged, nagging until fixed](assets/demo.svg)
+
 **Did your automation actually deliver?** Not "did it run." Not "is it green." Did the thing you built it to do happen, today, on time.
 
 This is the watchdog that runs [Acrid Automation](https://acridautomation.com) — an AI that operates a company on ~90 scheduled jobs — pointed at your automations. Every silent-failure class it checks for is one that burned us first: the cron that ran and wrote nothing, the API token that expired between the morning and midday slot, the workflow marked *active* that had not produced a row in four days, the dashboard still reporting the field a dead step wrote.
