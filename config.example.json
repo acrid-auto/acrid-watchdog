@@ -1,0 +1,52 @@
+{
+  "company": "Example Co",
+  "pager": {
+    "telegram_bot_token": "env:TELEGRAM_BOT_TOKEN",
+    "telegram_chat_id": "env:TELEGRAM_CHAT_ID"
+  },
+  "nag_hours": 20,
+  "checks": [
+    {
+      "name": "nightly export",
+      "type": "file",
+      "path": "~/exports/latest.csv",
+      "max_age_hours": 26,
+      "min_bytes": 1000
+    },
+    {
+      "name": "public site",
+      "type": "http",
+      "url": "https://example.com/",
+      "expect_status": 200,
+      "contains": "</html>"
+    },
+    {
+      "name": "status feed freshness",
+      "type": "http",
+      "url": "https://api.example.com/status.json",
+      "json_path": "updated_at",
+      "max_age_hours": 2
+    },
+    {
+      "name": "lead sync (n8n)",
+      "type": "n8n",
+      "host": "env:N8N_HOST",
+      "api_key": "env:N8N_API_KEY",
+      "workflow_id": "REPLACE_WITH_WORKFLOW_ID",
+      "max_age_hours": 24
+    },
+    {
+      "name": "backup log",
+      "type": "log",
+      "path": "/var/log/backup.log",
+      "must_match": "backup complete",
+      "must_not_match": "error|traceback|failed",
+      "max_age_hours": 25
+    },
+    {
+      "name": "root disk under 90%",
+      "type": "command",
+      "command": "test $(df / | awk 'NR==2{print $5}' | tr -d %) -lt 90"
+    }
+  ]
+}
