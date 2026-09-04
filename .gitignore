@@ -3,3 +3,4 @@ reports/
 config.json
 com.acrid.watchdog.plist
 __pycache__/
+.unz/
