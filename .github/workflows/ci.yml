@@ -1,0 +1,37 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Unit tests (standard library only)
+        run: python -m unittest discover -s tests -v
+      - name: One real check run on Linux
+        run: |
+          cat > config.json <<'JSON'
+          {
+            "company": "CI",
+            "pager": {},
+            "nag_hours": 20,
+            "checks": [
+              { "name": "example.com answers", "type": "http", "url": "https://example.com/", "expect_status": 200 },
+              { "name": "runner disk under 95%", "type": "command", "command": "test $(df / | awk 'NR==2{print $5}' | tr -d %) -lt 95" }
+            ]
+          }
+          JSON
+          python watchdog.py check
+          python watchdog.py status
